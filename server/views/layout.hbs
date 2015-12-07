@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="Author" ng-strict-di>
+<head>
+  <title>media.airpair</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="{{bundle.libsCss}}" type="text/css" />
+  <link rel="stylesheet" href="{{bundle.appCss}}" type="text/css" />
+  <base href="/" />
+</head>
+<body>
+
+<header>
+  <div>
+    <a href="/" tile="media.airpair.com" target="_self" class="author"></a>
+{{!--     <ul>
+      <li class="lb"><a href="/library" target="_self">Collaborate</a></li>
+    </ul> --}}
+  </div>
+</header>
+
+<div class="main-wrap">
+  {{{body}}}
+</div>
+<hr />
+
+{{#if authenticated}}
+
+  <footer>
+    <ul>
+      <li><a href="/logout" class="logout" target="_self">Logout</a></li>
+      <li>&copy; 2016 airpair, inc.</li>
+    </ul>
+  </footer>
+{{/if}}
+
+</body>
+</html>

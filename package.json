@@ -1,0 +1,24 @@
+{
+  "name": "media.airpair.com",
+  "version": "0.6.0",
+  "homepage": "https://media.airpair.com",
+  "author": "airpair inc.",
+  "description": "Admin for advertisers",
+  "engines": {
+    "node": "4.1.2",
+    "npm": "2.14.4"
+  },
+  "privarte": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "cmd/start",
+    "test": "cmd/test"
+  },
+  "dependencies": {
+    "meanair-auth": "0.6.1",
+    "meanair-model": "0.6.2",
+    "meanair-server": "0.6.1",
+    "meanair-shared": "0.6.2",
+    "passport": "0.3.0"
+  }
+}
