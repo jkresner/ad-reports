@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html ng-app="Author" ng-strict-di>
+<html ng-app="Media" ng-strict-di>
 <head>
-  <title>media.airpair</title>
+  <title>adserve.airpair</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <link rel="stylesheet" href="{{bundle.libsCss}}" type="text/css" />
-  <link rel="stylesheet" href="{{bundle.appCss}}" type="text/css" />
+  <link rel="stylesheet" href="https://static.airpair.com/css/libs.css" type="text/css" />
+  <link rel="stylesheet" href="/css/app.css" type="text/css" />
   <base href="/" />
 </head>
 <body>
@@ -14,19 +14,44 @@
 <header>
   <div>
     <a href="/" tile="media.airpair.com" target="_self" class="author"></a>
-{{!--     <ul>
-      <li class="lb"><a href="/library" target="_self">Collaborate</a></li>
-    </ul> --}}
+    <ul>
+      <li class="lb"><a href="/campaigns" target="_self">campaigns</a></li>
+      <li class="lb"><a href="/reports" target="_self">reports</a></li>
+    </ul>
   </div>
 </header>
 
 <div class="main-wrap">
-  {{{body}}}
+  {{#if authenticated}}
+    {{{body}}}
+  {{else}}
+    <div class="choice">
+      <div class="local option">
+
+  <h2>AdServe Login</h2>
+
+  <form name="loginForm" action="/auth/login" class="login" method="post">
+    <div form-group>
+      <label class="control-label sr-only" for="loginEmail">Email</label>
+      <input id="loginEmail" form-control type="email" placeholder="Email" name="email" required>
+    </div>
+    <div form-group>
+      <label class="control-label sr-only" for="loginPassword">Password</label>
+      <input id="loginPassword" form-control type="password" placeholder="Password" name="password" required>
+    </div>
+
+    <button id="loginPassowrdAuth" track-click="auth" type="submit" class="btn btn-warning btn-lg">Submit</button>
+
+  </form>
+
+</div>
+
+    </div>
+  {{/if}}
 </div>
 <hr />
 
 {{#if authenticated}}
-
   <footer>
     <ul>
       <li><a href="/logout" class="logout" target="_self">Logout</a></li>
@@ -34,6 +59,58 @@
     </ul>
   </footer>
 {{/if}}
+
+
+<style>
+
+.login { margin:20px auto }
+.login input {
+  border:solid 2px @bluegray;
+  padding:10px;
+  height:auto;
+  margin-bottom:10px;
+  color:@mediumgray;
+  width:200px;
+}
+.login button {
+  width:200px;
+}
+
+.choice {
+  margin:40px auto;
+  text-align:center;
+}
+.choice h2 {
+  margin-bottom:0;padding-bottom:0;
+  font-size:26px;line-height:40px;font-weight:300  }
+
+.choice .option {
+    vertical-align:top;
+    width:300px;
+    border:solid 2px #dff2ef;
+    padding:5px;
+    margin:10px
+    text-align:center;
+    display:inline-block;
+}
+.choice .option h2 {
+    margin:0 auto 20px auto;
+    max-width:70%;
+    border-bottom:solid 1px #dff2ef;
+  }
+    /*ul { padding:0;list-style:none; }*/
+.choice .option a.btn { width:60%;margin-top:10px }
+
+  /*@media only screen and (max-width:640px) {
+    display:block;
+    width:300px;
+    margin-bottom:20px;
+  */}
+}
+
+
+</style>
+
 
 </body>
 </html>

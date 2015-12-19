@@ -2,7 +2,169 @@
 <main ng-view>
   {{{body}}}
 </main>
+
+<style type="text/css">
+  .campaigns h3 { font-size:22px; }
+  .campaigns a { font-size:13px; }
+  .campaigns time { font-size:13px; }
+  .filters { width:100%;margin-top:20px }
+  .filters td { background-color:#dff2ef;padding:10px; }
+  .filters select { width:170px;display:inline-block;margin:0px 10px; }
+  .report li { display:block;clear:both; }
+  table.log { }
+  table.log td { border-top:solid 1px gray;font-size:9px;
+    overflow:hidden;text-align:right;padding:6px!important; }
+  table.log th { font-size:10px;background-color:#fcf8e3;padding:8px 6px!important; }
+  table.log th span { float:right }
+  div.impressions { float:left;max-width:52%;min-width:320px }
+  div.clicks { float:right;clear:left;max-width:45%;min-width:320px }
+  p.report-summary { font-size:11px;padding:0;margin:5px;color:#4d4e4e; }
+  td.url {
+    text-align:left!important;
+    max-width:290px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+</style>
+
+
+
+<script type="text/ng-template" id="/campaigns.html">
+<header><ol class="entry-meta breadcrumb">
+  <li class="current">Campaigns</li>
+</ol></header>
+<ul class="campaigns">
+  <li ng-repeat="c in campaigns">
+    <h3 ng-bind="c.name"></h3>
+    <table class="table table-striped">
+      <tr>
+        <th style="width:100px">
+          <code ng-bind="c.code"></code>
+
+          <time ng-bind="c.start"></time>
+          -
+          <time ng-bind="c.end"></time>
+        </th>
+      </tr>
+      <tr ng-repeat="ad in c.ads">
+        <td>
+          <span ad-img url="ad.img"></span>
+          <b ng-bind="ad.code"></b>
+          <a ng-bind="ad.url"></a>
+        </td>
+      </tr>
+    </table>
+
+  </li>
+</ul>
+</script>
+
+
+<script type="text/ng-template" id="/reports.html">
+<header><ol class="entry-meta breadcrumb">
+  <li class="current">Reports</li>
+</ol></header>
+<table class="filters">
+  <tr>
+    <td>
+      <label>Campaign</label>
+      <select ng-model="data.c" ng-change="refresh()">
+        <option value="56731043c554f496b6e1e217">2015 Q4 Heroku Signup</option>
+        <option value="56731043c554f496b6e1e147">2015 Q3 Heroku Signup</option>
+      </select>
+      <a href="/campaigns" target="_blank">see all</a>
+    </td>
+    <td></td>
+    <td>
+      <label>Week</label>
+      <select ng-model="data.s" ng-change="refresh()">
+        <option value="select">-- select --</option>
+        <option value="20151214">2015 12/14</option>
+        <option value="20151207">2015 12/07</option>
+        <option value="20151130">2015 11/30</option>
+        <option value="20151123">2015 11/23</option>
+        <option value="20151116">2015 11/16</option>
+        <option value="20151109">2015 11/09</option>
+        <option value="20151102">2015 11/02</option>
+        <option value="20151026">2015 10/26</option>
+        <option value="20151019">2015 10/19</option>
+        <option value="20151012">2015 10/12</option>
+        <option value="20151005">2015 10/05</option>
+        <option value="20150928">2015 09/28</option>
+        <option value="20150921">2015 09/21</option>
+        <option value="20150914">2015 09/14</option>
+        <option value="20150907">2015 09/07</option>
+        <option value="20150831">2015 08/31</option>
+        <option value="20150824">2015 08/24</option>
+        <option value="20150817">2015 08/17</option>
+        <option value="20150810">2015 08/10</option>
+        <option value="20150803">2015 08/03</option>
+      </select>
+    </td>
+    <td></td>
+  </tr>
+</table>
+
+<p class="report-summary" ng-if="!report">
+  <br />
+  Select week to show results ...
+</p>
+<p class="report-summary" ng-if="report">
+  Displaying <span ng-bind="report.ads.length"></span> ads from
+  <b ng-bind="report.start"></b> to <b ng-bind="report.end"></b>
+</p>
+<hr />
+<ul class="report" ng-if="report">
+  <li ng-repeat="ad in report.ads">
+    <h5 ng-bind="ad.code"></h5>
+    <div class="clicks">
+      <table class="table table-striped log">
+        <tr>
+          <th>Url</th>
+          <th>Clicks</th>
+        </tr>
+        <tr>
+          <th>TOTAL</th>
+          <th><span ng-bind="ad.total.clicks"></span></th>
+        </tr>
+        <tr ng-repeat="c in ad.clicks">
+          <td class="url"><span ng-bind="c.url || 'Unknown'"></span></td>
+          <td><span ng-bind="c.count"></span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="impressions">
+      <table class="table table-striped log">
+        <tr>
+          <th>Url</th>
+          <th>Impressions</th>
+        </tr>
+        <tr>
+          <th>TOTAL</th>
+          <th><span ng-bind="ad.total.impressions"></span></th>
+        </tr>
+        <tr ng-repeat="c in ad.impressions">
+          <td class="url"><span ng-bind="c.url"></span></td>
+          <td><span ng-bind="c.count"></span></td>
+        </tr>
+      </table>
+    </div>
+  </li>
+</ul>
+
+</script>
+
+
 <script>
   window.pageData = { session: {{{ JSON session }}} }
 </script>
-<script type="text/javascript" src="{{bundle.ang1Js}}"></script>
+<script type="text/javascript" src="/js/angular.min.js"></script>
+<script type="text/javascript" src="/js/angular-route.min.js"></script>
+<script type="text/javascript" src="/js/ang1.js"></script>
