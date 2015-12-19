@@ -1,5 +1,5 @@
 var views = {
-  session:     '_id name email'
+  session:     '_id name teamIds'
 }
 
 

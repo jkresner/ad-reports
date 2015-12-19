@@ -2,11 +2,15 @@ module.exports = (app, mw) => {
 
 
   app.API('report')
-    .middleware('authd inflateMe')
-    .get ({ getClicks:            'body',
-            getImpressions:       'body'             })
+    .params('campaign')
+    .get ({ getCampaign:        'campaign query.s'  })
     .end()
 
 
+  app.API('campaigns')
+    .get ({ get:                ''                  })
+    .end()
 
 }
+
+

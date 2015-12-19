@@ -15,10 +15,11 @@
     "test": "cmd/test"
   },
   "dependencies": {
-    "meanair-auth": "0.6.1",
-    "meanair-model": "0.6.2",
-    "meanair-server": "0.6.1",
+    "meanair-auth": "0.6.2",
+    "meanair-model": "0.6.3",
+    "meanair-server": "0.6.2",
     "meanair-shared": "0.6.2",
+    "mongodb": "2.0.42",
     "passport": "0.3.0"
   }
 }

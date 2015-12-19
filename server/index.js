@@ -1,23 +1,36 @@
 var maServer                 = require('meanair-server')
 global.config                = maServer.Setup({
   auth: {
-    appKey:                  'media',
-    oauth:                   undefined
+    appKey:                  'adsrv',
+    oauth:                   undefined,
+    orgs:                    true,
+    password:                { login: true, logic: 'loginPass' }
   },
+  comm:                      undefined,
   http: {
-    port:                    process.env.PORT || 3333
+    cookieSecret:            process.env.HTTP_COOKIESECRET || 'adsmony',
+    port:                    process.env.PORT || 3333,
+    static:                  { dirs: 'dist' },
+    security:                undefined,
+  },
+  log:                       { app: undefined, auth: undefined, 'wrpr': undefined },
+  middleware: {
+    session:                 { authedData: "_id name teamIds" },
+    plugins:                 []
   },
   model: {
-    mongoUrl:               'mongodb://localhost/airpair_analytics',
-    sessionStore:           { collection: 'sessions_media' }
+    mongoUrl:                process.env.MODEL_MONGOURL || 'mongodb://localhost/airpair_analytics',
+    sessionStore:            { collection: 'sess_adsrv' }
   }
 }, process.env.ENV || 'dev').config
+
+
+global.ObjectID     = require('mongodb').ObjectID
 
 
 function run(done) {
 
   var model = require('meanair-model')(done)
-
   model.connect(() =>
 
     maServer.App
@@ -33,4 +46,5 @@ function run(done) {
 
 }
 
-run(e => e ? $log('APP.ERROR'.red, e) : '')
+
+run(e => e ? $log('APP.ERROR'.red, e) : 0)
