@@ -7,6 +7,23 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="https://static.airpair.com/css/libs.css" type="text/css" />
   <link rel="stylesheet" href="/css/app.css" type="text/css" />
+  <link rel="apple-touch-icon" sizes="57x57" href="https://static.airpair.com/ico/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="https://static.airpair.com/ico/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="https://static.airpair.com/ico/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://static.airpair.com/ico/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="https://static.airpair.com/ico/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="https://static.airpair.com/ico/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="https://static.airpair.com/ico/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="https://static.airpair.com/ico/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://static.airpair.com/ico/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="https://static.airpair.com/ico/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://static.airpair.com/ico/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="https://static.airpair.com/ico/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://static.airpair.com/ico/favicon-16x16.png">
+  <link rel="manifest" href="https://static.airpair.com/ico/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="https://static.airpair.com/ico/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
   <base href="/" />
 </head>
 <body>
@@ -14,10 +31,15 @@
 <header>
   <div>
     <a href="/" tile="media.airpair.com" target="_self" class="author"></a>
+    {{#if authenticated}}
     <ul>
-      <li class="lb"><a href="/campaigns" target="_self">campaigns</a></li>
-      <li class="lb"><a href="/reports" target="_self">reports</a></li>
+      <li class="cp"><a href="/campaigns" target="_self">campaigns</a></li>
+      <li class="rp">
+          <span>reports</span> &nbsp;
+          <a href="/roi" target="_self">CP/ROI</a>
+          <span>|</span> <a href="/impressions" target="_self">Impressions</a></li>
     </ul>
+    {{/if}}
   </div>
 </header>
 
@@ -30,14 +52,16 @@
 
   <h2>AdServe Login</h2>
 
-  <form name="loginForm" action="/auth/login" class="login" method="post">
+  <form name="loginForm" action="/auth/password/login" class="login" method="post">
     <div form-group>
       <label class="control-label sr-only" for="loginEmail">Email</label>
       <input id="loginEmail" form-control type="email" placeholder="Email" name="email" required>
     </div>
     <div form-group>
       <label class="control-label sr-only" for="loginPassword">Password</label>
-      <input id="loginPassword" form-control type="password" placeholder="Password" name="password" required>
+      <input id="loginPassword" form-control type="password" placeholder="Password" name="password" required
+        value="sfmedia2016"
+      >
     </div>
 
     <button id="loginPassowrdAuth" track-click="auth" type="submit" class="btn btn-warning btn-lg">Submit</button>
@@ -49,67 +73,16 @@
     </div>
   {{/if}}
 </div>
-<hr />
 
 {{#if authenticated}}
   <footer>
     <ul>
-      <li><a href="/logout" class="logout" target="_self">Logout</a></li>
+      <li><a href="/auth/logout" class="logout" target="_self">Logout</a></li>
+      <li>|</li>
       <li>&copy; 2016 airpair, inc.</li>
     </ul>
   </footer>
 {{/if}}
-
-
-<style>
-
-.login { margin:20px auto }
-.login input {
-  border:solid 2px @bluegray;
-  padding:10px;
-  height:auto;
-  margin-bottom:10px;
-  color:@mediumgray;
-  width:200px;
-}
-.login button {
-  width:200px;
-}
-
-.choice {
-  margin:40px auto;
-  text-align:center;
-}
-.choice h2 {
-  margin-bottom:0;padding-bottom:0;
-  font-size:26px;line-height:40px;font-weight:300  }
-
-.choice .option {
-    vertical-align:top;
-    width:300px;
-    border:solid 2px #dff2ef;
-    padding:5px;
-    margin:10px
-    text-align:center;
-    display:inline-block;
-}
-.choice .option h2 {
-    margin:0 auto 20px auto;
-    max-width:70%;
-    border-bottom:solid 1px #dff2ef;
-  }
-    /*ul { padding:0;list-style:none; }*/
-.choice .option a.btn { width:60%;margin-top:10px }
-
-  /*@media only screen and (max-width:640px) {
-    display:block;
-    width:300px;
-    margin-bottom:20px;
-  */}
-}
-
-
-</style>
 
 
 </body>

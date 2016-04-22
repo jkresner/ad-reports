@@ -1,0 +1,31 @@
+{
+  "auth": {
+    "appKey":                "adsrv",
+    "oauth":                 "{{undefine}}",
+    "orgs":                  true,
+    "password":              { "login": "loginPass" }
+  },
+  "comm":                    "{{undefine}}",
+  "http": {
+    "cookieSecret":          "adsmony",
+    "port":                  3333,
+    "static":                { "dirs": "dist" }
+  },
+  "middleware": {
+    "session": {
+      "authdData":          "_id name teamIds",
+      "store":               { "collection": "sess_adsrv" }
+    }
+  },
+  "model": {
+    "analytics": {
+      "mongoUrl":            "mongodb://localhost/airpair_analytics"
+    },
+    "domain": {
+      "mongoUrl":            "mongodb://localhost/airpair_analytics"
+    }
+  },
+  "templates": {
+    "dirs":                  { "helpers": "views/helpers" }
+  }
+}

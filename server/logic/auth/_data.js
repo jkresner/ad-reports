@@ -9,9 +9,6 @@ module.exports = new LogicDataHelper(
 
   ({select}) => ({
 
-    session: r =>
-      select.session(r)
-
   })
 
 )

@@ -13,7 +13,7 @@ module.exports = new LogicDataHelper(
       r = select.list(r)
       r.start = moment(r.start).format('YYYY MMM DD')
       r.end = moment(r.end).format('YYYY MMM DD')
-      for (var ad of r.ads) ad.code = ad.shortUrl.replace('https://www.airpair.com/visit/','')
+      for (var ad in r.ads) r.ads[ad].code = r.ads[ad].shortUrl.replace('https://www.airpair.com/visit/','')
       return r
     }
 

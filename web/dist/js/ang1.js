@@ -2,10 +2,12 @@ angular.module("Media", ['ngRoute'])
 
 
 .config(["$locationProvider", "$routeProvider", function($locationProvider, $routeProvider) {
+
   $locationProvider.html5Mode(true)
 
   $routeProvider
-    .when('/reports', {controller: 'reports', templateUrl: '/reports.html'})
+    .when('/roi', {controller: 'roi', templateUrl: '/roi.html'})
+    .when('/impressions', {controller: 'impressions', templateUrl: '/impressions.html'})
     .when('/campaigns', {controller: 'campaigns', templateUrl: '/campaigns.html'})
 
 }])
@@ -45,26 +47,11 @@ angular.module("Media", ['ngRoute'])
 
 .directive('adImg', function() {
   return {
-    template: '<img ng-src="{{url}}" class="ad" />',
-    scope: { url: '=url' }
+    template: '<img ng-src="{{url}}" class="ad ad{{width}}" /><pre><a ng-url="">{{dest}}</a></pre>',
+    scope: { url: '=url', width: '=width', dest: '=dest', }
   }
 })
 
-
-.controller('reports', ["$scope", "API", function($scope, API) {
-  $scope.data = { s: 'select', c: '56731043c554f496b6e1e217' }
-
-  $scope.refresh = function() {
-    if ($scope.data.s == 'select') return
-    var query = $scope.data.c + "?s="+$scope.data.s
-
-    API("/report/campaign/"+query, function(r) {
-      $scope.report = r
-    }, () => {})
-
-  }
-
-}])
 
 
 .controller('campaigns', ["$scope", "API", function($scope, API) {
@@ -74,3 +61,45 @@ angular.module("Media", ['ngRoute'])
   }, () => {})
 
 }])
+
+
+.controller('impressions', ["$scope", "API", function($scope, API) {
+  $scope.data = { s: 'select', c: '56f9781c7365645894420ae7' }
+
+  $scope.refresh = function() {
+    if ($scope.data.s == 'select') return
+    var query = $scope.data.c + "?s="+$scope.data.s
+
+    API("/report/impressions/"+query, function(r) {
+      $scope.report = r
+    }, () => {})
+
+  }
+
+}])
+
+
+.controller('roi', ["$scope", "API", function($scope, API) {
+   $scope.campaigns = {
+      "Q2": {
+        name: "2016 Q2 Heroku Signup",
+        short: "Q2"
+      }
+   }
+
+
+  // $scope.data = { s: 'select', c: '56f9781c7365645894420ae7' }
+
+  // $scope.refresh = function() {
+    // if ($scope.data.s == 'select') return
+    // var query = $scope.data.c + "?s="+$scope.data.s
+
+    // API("/report/impressions/"+query, function(r) {
+      // $scope.report = r
+    // }, () => {})
+
+  // }
+
+}])
+
+

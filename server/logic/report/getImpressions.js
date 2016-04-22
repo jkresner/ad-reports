@@ -1,18 +1,21 @@
 module.exports = (DAL, Data, Shared, Lib) => ({
 
   validate(user, campaign, start) {
-    console.log('validate'.white)
+    // console.log('validate'.white)
   },
 
   exec(campaign, start, cb) {
     var startUtc = moment(start, 'YYYYMMDD')
-    var endUtc = moment(start, 'YYYYMMDD').add(1,'weeks')
+    var endUtc = moment(start, 'YYYYMMDD').add(1,'week')
     var startId = ObjectID.createFromTime(startUtc.format('X'))
     var endId = ObjectID.createFromTime(endUtc.format('X'))
+
     var adIds = _.pluck(campaign.ads, '_id')
     var imgs =  _.pluck(campaign.ads, 'img').map(i => i.replace('https://www.airpair.com/ad/',''))
 
     var q1 = { _id: { $gt: startId, $lt: endId }, img: { $in: imgs } }
+
+    $log('impressions.startId', startId)
     DAL.Impression.aggregate([
 
       { $match: q1 },
@@ -49,12 +52,12 @@ module.exports = (DAL, Data, Shared, Lib) => ({
       }
 
 
-      var q2 = { _id: { $gt: startId, $lt: endId }, objectId: { $in: adIds } }
+      var q2 = { _id: { $gt: startId, $lt: endId }, oId: { $in: adIds } }
       DAL.View.aggregate([
 
         { $match: q2 },
-        { $project: { _id:1,objectId:1,url:1,referer:1 } },
-        { $group: { _id:{ad:'$objectId',ref:'$referer'}, count: { $sum: 1 } } },
+        { $project: { _id:1,oId:1,url:1,ref:1 } },
+        { $group: { _id:{ad:'$oId',ref:'$ref'}, count: { $sum: 1 } } },
         { $sort: { count: -1 } },
 
       ], (e, agg2) => {
