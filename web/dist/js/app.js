@@ -6,9 +6,9 @@ angular.module("Media", ['ngRoute'])
   $locationProvider.html5Mode(true)
 
   $routeProvider
-    .when('/roi', {controller: 'roi', templateUrl: '/roi.html'})
-    .when('/impressions', {controller: 'impressions', templateUrl: '/impressions.html'})
     .when('/campaigns', {controller: 'campaigns', templateUrl: '/campaigns.html'})
+    .when('/impressions', {controller: 'impressions', templateUrl: '/impressions.html'})
+    .when('/roi', {controller: 'roi', templateUrl: '/roi.html'})
 
 }])
 
@@ -23,7 +23,6 @@ angular.module("Media", ['ngRoute'])
       error = success
       success = data
       data = undefined
-
     }
     else {
       if (url.match('/update') || data._id) {
@@ -38,7 +37,7 @@ angular.module("Media", ['ngRoute'])
     if (data)
       httpArgs.push(data)
 
-
+    if (!error) error = function(e) { alert(e) }
     $http[method].apply(null, httpArgs).success(success).error(error)
   }
 
@@ -53,27 +52,22 @@ angular.module("Media", ['ngRoute'])
 })
 
 
-
 .controller('campaigns', ["$scope", "API", function($scope, API) {
 
-  API("/campaigns", function(r) {
-    $scope.campaigns = r
-  }, () => {})
+  API("/campaigns", function(r) { $scope.campaigns = r })
 
 }])
 
 
 .controller('impressions', ["$scope", "API", function($scope, API) {
+
   $scope.data = { s: 'select', c: '56f9781c7365645894420ae7' }
 
   $scope.refresh = function() {
     if ($scope.data.s == 'select') return
     var query = $scope.data.c + "?s="+$scope.data.s
 
-    API("/report/impressions/"+query, function(r) {
-      $scope.report = r
-    }, () => {})
-
+    API("/report/impressions/"+query, function(r) { $scope.report = r })
   }
 
 }])
@@ -86,8 +80,6 @@ angular.module("Media", ['ngRoute'])
         short: "Q2"
       }
    }
-
-
   // $scope.data = { s: 'select', c: '56f9781c7365645894420ae7' }
 
   // $scope.refresh = function() {
