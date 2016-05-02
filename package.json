@@ -1,6 +1,6 @@
 {
   "name": "media.airpair.com",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "homepage": "https://media.airpair.com",
   "author": "airpair inc.",
   "description": "Admin for advertisers",
@@ -11,15 +11,13 @@
   "privarte": true,
   "license": "UNLICENSED",
   "scripts": {
-    "start": "cmd/start",
-    "test": "cmd/test"
+    "start": "node --harmony-destructuring server/index.js"
   },
   "dependencies": {
-    "meanair-auth": "0.6.2",
-    "meanair-model": "0.6.3",
-    "meanair-server": "0.6.2",
-    "meanair-shared": "0.6.2",
-    "mongodb": "2.0.42",
-    "passport": "0.3.0"
+    "meanair-auth": "0.6.4",
+    "meanair-model": "0.6.4",
+    "meanair-server": "0.6.4",
+    "meanair-shared": "0.6.3",
+    "mongodb": "2.0.42"
   }
 }

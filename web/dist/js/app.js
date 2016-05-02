@@ -51,6 +51,13 @@ angular.module("Media", ['ngRoute'])
   }
 })
 
+.directive('urlLink', function() {
+  return {
+    template: '<a href="https://www.{{c.url}}" target="_blank">{{c.text||c.url.replace("airpair.com","")}}</a>',
+    scope: { c: '=c' }
+  }
+})
+
 
 .controller('campaigns', ["$scope", "API", function($scope, API) {
 
@@ -61,15 +68,25 @@ angular.module("Media", ['ngRoute'])
 
 .controller('impressions', ["$scope", "API", function($scope, API) {
 
-  $scope.data = { s: 'select', c: '56f9781c7365645894420ae7' }
+  $scope.data = {
+    s: '20160425',
+    // s: 'select',
+    c: '56f9781c7365645894420ae7'
+
+  }
 
   $scope.refresh = function() {
     if ($scope.data.s == 'select') return
     var query = $scope.data.c + "?s="+$scope.data.s
 
-    API("/report/impressions/"+query, function(r) { $scope.report = r })
+    API("/report/impressions/"+query, function(r) {
+      $scope.report = r
+      $scope.impressions = 0
+      r.ads.forEach(ad => $scope.impressions += ad.total.impressions)
+    })
   }
 
+  $scope.refresh()
 }])
 
 

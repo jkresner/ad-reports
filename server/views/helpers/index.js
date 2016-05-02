@@ -3,9 +3,10 @@ module.exports = {
   weekOptions() {
     var opts = ''
     var mom = moment("20150803", "YYYYMMDD")
-    while (mom < moment()) {
-      opts = `<option value="${mom.format('YYYYMMDD')}">${mom.format('YYYY MM/DD')} Mon - Sun ${mom.add(6, 'day').format(' MM/DD')}</option>` + opts
-      mom = mom.add(7, 'day')
+    while (mom < moment().add(-7, 'day')) {
+      var start = mom.add(7, 'day')
+      var end = moment(mom).add(6, 'day')
+      opts = `<option value="${start.format('YYYYMMDD')}">${start.format('YYYY MM/DD')} Mon - Sun ${end.format(' MM/DD')}</option>` + opts
     }
 
     return `<option value="select">-- select week --</option>` + opts

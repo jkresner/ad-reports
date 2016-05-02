@@ -142,15 +142,16 @@ ul.campaigns { list-style:none;padding-left:0;margin:0!important }
 .filters select { width:220px;display:inline-block;margin:0px 10px;font-size:22px }
 .report li { display:block;clear:both; }
 ul.report { padding-left:0;margin-left:0!important }
-p.report-summary { font-size:11px;padding:0;margin:5px;color:#4d4e4e; }
+p.report-summary { font-size:13px;padding:0;margin:25px;color:#4d4e4e;text-align:center; }
+p.report-summary span { font-weight:bold;color:green }
 p.report-empty { min-height:300px;text-align:center;padding:50px;display:block;font-size:16px }
-table.log { }
-table.log td { border-top:solid 1px gray;font-size:9px;
+table.log {  }
+table.log td { border-top:solid 1px gray;font-size:11px;
   overflow:hidden;text-align:right;padding:6px!important; }
-table.log th { font-size:10px;background-color:#fcf8e3;padding:8px 6px!important; }
-table.log th span { float:right }
-div.impressions { float:left;max-width:52%;min-width:320px }
-div.clicks { float:right;clear:left;max-width:45%;min-width:320px }
+table.log th { font-size:10px;background-color:#fcf8e3!important;;
+  padding:8px 6px!important;text-align:right; }
+table.log th:first-child { text-align:left; }
+table.log th span { color:gray;padding-left:10px;display:inline-block;  }
 td.url {
   text-align:left!important;
   max-width:290px;

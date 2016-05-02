@@ -78,7 +78,9 @@
 </script>
 
 
+
 <script type="text/ng-template" id="/impressions.html">
+
 <header>Impression report</header>
 <div class="filters">
   <select ng-model="data.c" ng-change="refresh()">
@@ -95,46 +97,37 @@
   Select week to show results ...
 </p>
 <p class="report-summary" ng-if="report">
-  Displaying <span ng-bind="report.ads.length"></span> ads from
+  Displaying <span ng-bind="report.ads.length"></span> ads
+  totaling <span ng-bind="impressions | number "></span> impressions served
+  from
   <b ng-bind="report.start"></b> to <b ng-bind="report.end"></b>
 </p>
 <hr />
 <ul class="report" ng-if="report">
+
   <li ng-repeat="ad in report.ads">
-    <h5 ng-bind="ad.code"></h5>
-    <div class="clicks">
+    <h5 ng-bind="ad.img"></h5>
+
       <table class="table table-striped log">
         <tr>
           <th>Url</th>
-          <th>Clicks</th>
+          <th>CTR</th>
+          <th>Impressions <span ng-bind="ad.total.impressions"></span></th>
+          <th>Clicks <span ng-bind="ad.total.clicks"></span></th>
         </tr>
-        <tr>
-          <th>TOTAL</th>
-          <th><span ng-bind="ad.total.clicks"></span></th>
-        </tr>
-        <tr ng-repeat="c in ad.clicks">
-          <td class="url"><span ng-bind="c.url || 'Unknown'"></span></td>
+        <tr ng-repeat="c in ad.impressions" ng-if="c.clicks > 0 || c.count > 50">
+          <td class="url">
+            <span url-link c="c"></span>
+          </td>
+          <td><span ng-bind="(c.clicks ? c.clicks/c.count : 0) | number:3"></span>%</td>
           <td><span ng-bind="c.count"></span></td>
+          <td><span ng-bind="c.clicks || '-'"></span></td>
         </tr>
       </table>
-    </div>
-    <div class="impressions">
-      <table class="table table-striped log">
-        <tr>
-          <th>Url</th>
-          <th>Impressions</th>
-        </tr>
-        <tr>
-          <th>TOTAL</th>
-          <th><span ng-bind="ad.total.impressions"></span></th>
-        </tr>
-        <tr ng-repeat="c in ad.impressions">
-          <td class="url"><span ng-bind="c.url"></span></td>
-          <td><span ng-bind="c.count"></span></td>
-        </tr>
-      </table>
+
     </div>
   </li>
+
 </ul>
 
 </script>
@@ -331,9 +324,7 @@
     </div>
     <div form-group>
       <label class="control-label sr-only" for="loginPassword">Password</label>
-      <input id="loginPassword" form-control type="password" placeholder="Password" name="password" required
-        value="sfmedia2016"
-      >
+      <input id="loginPassword" form-control type="password" placeholder="Password" name="password" required>
     </div>
 
     <button id="loginPassowrdAuth" track-click="auth" type="submit" class="btn btn-warning btn-lg">Submit</button>

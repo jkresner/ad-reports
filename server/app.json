@@ -11,18 +11,21 @@
     "port":                  3333,
     "static":                { "dirs": "dist" }
   },
+  "log": {
+    "mw":                    { "api": false }
+  },
   "middleware": {
     "session": {
-      "authdData":          "_id name teamIds",
+      "authdData":           "_id name teamIds",
       "store":               { "collection": "sess_adsrv" }
     }
   },
   "model": {
     "analytics": {
-      "mongoUrl":            "mongodb://localhost/airpair_analytics"
+      "mongoUrl":            "mongodb://localhost/airpair_dev_analytics"
     },
     "domain": {
-      "mongoUrl":            "mongodb://localhost/airpair_analytics"
+      "mongoUrl":            "mongodb://localhost/airpair_dev_analytics"
     }
   },
   "templates": {
