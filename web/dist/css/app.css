@@ -1,3 +1,5 @@
+body { padding-bottom:30px }
+
 a:hover { text-decoration:none!important; }
 
 
@@ -45,9 +47,9 @@ body > header ul > li:last-child a {                        width:inherit;
                               }
 
 body > header ul > li a {    text-align:center;
-                             color:#3f4549;
+                             color:#ce5424;
                              font-size:14px;
-                             font-weight:bold;
+                             // font-weight:bold;
                             padding:0px 1px;
                               }
 body > header ul > li a:hover { color:#ff5f2e }
@@ -124,35 +126,58 @@ main > header { font-weight:bold;color:#83A8A1 }
 
 
 ul.campaigns { list-style:none;padding-left:0;margin:0!important }
-.campaigns > li { list-style:none;padding:20px 0 0 0;margin:50px 0 0 0;position:relative;  }
-.campaigns h3 { font-size:16px;display:inline; }
-.campaigns table { max-width:100%;position:relative; }
-.campaigns table td { position:relative; }
-.campaigns time { font-size:13px; }
+.campaigns > li { list-style:none;padding:7px 7px 0px 7px;margin:50px 0 0 0;position:relative;background-color:#f5f5f5;width:100% }
+.campaigns header { background-color:#c8d6d3;padding:7px 10px }
+.campaigns h3 { font-size:16px;float:right;margin:0 }
+.campaigns time { font-size:13px;font-weight:bold;color:#3f4549 }
+.campaigns section {
+  border-top:solid 1px #B4C1BE;position:relative;
+  padding:5px 1px }
+.campaigns div.meta {
+  width:24%;padding:11px;
+  background-color:#DDEDEA;top:0;bottom:0;left:0;
+  position:absolute;margin:0 5px 0 0;
+}
+.campaigns span.asset { width:100%;display:block;text-align:right;padding-right:2px }
 .campaigns b { display:block; }
-.campaigns pre { display:block; }
-.campaigns a { font-size:12px; }
-.campaigns th { background-color:#83A8A1!important }
-.ad { width:100% }
+.campaigns i { display:block;font-style:normal;font-size:12px }
+.campaigns a { font-size:10px;color:blue;display:block; }
+.ad { margin:0px 0 40px 0;max-width:75%;padding:8px 0px 0px 10px } }
 .ad900 { max-width:900px }
-.ad900 + pre { max-width:900px }
 .ad220 { max-width:220px }
-.ad220 + pre { max-width:220px }
+.campaigns pre { display:block;font-size:11px;
+  background-color:white;opacity:0.9;
+  position:absolute;bottom:13px;left:10px;right:0px;
+  margin:0 2px 0 2px;
+  padding:7px 8px 6px 8px }
+
+
+
 .filters { width:100%;margin-top:20px;background-color:#dff2ef;padding:10px; }
-.filters select { width:220px;display:inline-block;margin:0px 10px;font-size:22px }
+.filters select { width:240px;display:inline-block;margin:0px 10px;font-size:24px }
 .report li { display:block;clear:both; }
 ul.report { padding-left:0;margin-left:0!important }
-p.report-summary { font-size:13px;padding:0;margin:25px;color:#4d4e4e;text-align:center; }
-p.report-summary span { font-weight:bold;color:green }
-p.report-empty { min-height:300px;text-align:center;padding:50px;display:block;font-size:16px }
-table.log {  }
+.report-summary { font-size:13px;
+  padding:20px 3px 5px 3px;
+  background-color:#F2FAF9;
+  color:#4d4e4e;text-align:center;
+}
+.report-summary span { font-weight:bold;color:green }
+.report-summary table.log td { font-size:13px; }
+.report-summary table.log th { font-size:14px; }
+.report-empty { min-height:300px;text-align:center;padding:50px;display:block;font-size:16px }
+table.log { background:white;margin-bottom:0 }
 table.log td { border-top:solid 1px gray;font-size:11px;
   overflow:hidden;text-align:right;padding:6px!important; }
 table.log th { font-size:10px;background-color:#fcf8e3!important;;
   padding:8px 6px!important;text-align:right; }
-table.log th:first-child { text-align:left; }
+table.log th:first-child { text-align:left;width:55% }
+table.log tr td { width:15% }
+table.log tr td:first-child { width:55% }
+table.log tr td:last-child { width:15% }
 table.log th span { color:gray;padding-left:10px;display:inline-block;  }
-td.url {
+
+td.url, td.b, td.span {
   text-align:left!important;
   max-width:290px;
   overflow-wrap: break-word;
@@ -166,6 +191,13 @@ td.url {
   hyphens: auto;
 }
 
+table.report { margin-top:15px; }
+table.report tbody tr th { background-color:#F7D56F!important }
+table.report tr th:last-child { text-align:right; }
+table.report tr td:last-child { text-align:right; }
+table.report tr td { font-size:12px }
+table.tags tr td { font-size:11px }
+table.tags tbody tr th { background-color:#FFFFF2!important }
 
 footer { position:fixed;left:0;right:0;bottom:0;height:30px;
   background-color:white;

@@ -29,6 +29,8 @@ return asSchema({
 
   teamId:       { type: Id, ref: 'Team', required },
   brand:        { type: String, required },
+  spend:        { type: Number },
+  target:       { type: Number },
   name:         { type: String, required, unique },
   code:         { type: String, required, unique },
   start:        { type: Date, required },

@@ -46,7 +46,7 @@ angular.module("Media", ['ngRoute'])
 
 .directive('adImg', function() {
   return {
-    template: '<img ng-src="{{url}}" class="ad ad{{width}}" /><pre><a ng-url="">{{dest}}</a></pre>',
+    template: '<img ng-src="{{url}}" class="ad ad{{width}}" />',
     scope: { url: '=url', width: '=width', dest: '=dest', }
   }
 })
@@ -69,15 +69,14 @@ angular.module("Media", ['ngRoute'])
 .controller('impressions', ["$scope", "API", function($scope, API) {
 
   $scope.data = {
-    s: '20160425',
-    // s: 'select',
-    c: '56f9781c7365645894420ae7'
-
+    s: 'select'
+    // s: '56f9781c7365645894420ae7:20160425',
   }
 
   $scope.refresh = function() {
     if ($scope.data.s == 'select') return
-    var query = $scope.data.c + "?s="+$scope.data.s
+
+    var query = $scope.data.s.replace(':', "?s=")
 
     API("/report/impressions/"+query, function(r) {
       $scope.report = r
@@ -91,23 +90,10 @@ angular.module("Media", ['ngRoute'])
 
 
 .controller('roi', ["$scope", "API", function($scope, API) {
-   $scope.campaigns = {
-      "Q2": {
-        name: "2016 Q2 Heroku Signup",
-        short: "Q2"
-      }
-   }
-  // $scope.data = { s: 'select', c: '56f9781c7365645894420ae7' }
 
-  // $scope.refresh = function() {
-    // if ($scope.data.s == 'select') return
-    // var query = $scope.data.c + "?s="+$scope.data.s
-
-    // API("/report/impressions/"+query, function(r) {
-      // $scope.report = r
-    // }, () => {})
-
-  // }
+  API("/report/roi", function(r) {
+    $scope.rio = r
+  })
 
 }])
 

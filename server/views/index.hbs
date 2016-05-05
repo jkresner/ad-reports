@@ -56,73 +56,103 @@
 <header>Campaigns</header>
 <ul class="campaigns" style="margin:0;padding:0">
   <li ng-repeat="c in campaigns">
-    <table class="table table-striped">
-      <tr>
-        <th colspan="2">
-          <code ng-bind="c.code"></code>
-          <h3 ng-bind="c.name"></h3>
-          <div style="float:right">
-            <time ng-bind="c.start"></time>
-            -
-            <time ng-bind="c.end"></time>
-          </div>
-        </th>
-      </tr>
-      <tr ng-repeat="ad in c.ads">
-        <td><b ng-bind="ad.code"></b></td>
-        <td style="width:85%"><span ad-img url="ad.img" width="ad.width" dest="ad.url"></span></td>
-      </tr>
-    </table>
+    <header>
+      <h3 ng-bind="c.name"></h3>
+      <time ng-bind="c.start"></time>
+      -
+      <time ng-bind="c.end"></time>
+    </header>
+
+    <section ng-repeat="ad in c.ads">
+      <div class="meta">
+        <b ng-bind="ad.code"></b>
+        <i ng-bind="ad.img.replace('https://www.airpair.com/ads/','')"></i>
+      </div>
+
+      <span class="asset" ad-img url="ad.img" width="ad.width" dest="ad.url"></span>
+
+      <pre><a ng-bind="ad.url"></a></pre>
+
+    </section>
+
   </li>
 </ul>
 </script>
 
-
-
+{{!--   <select ng-model="data.c" ng-change="refresh()">
+    {{#each campaigns}}
+    <option value="{{_id}}">{{name}}</option>
+    {{/each}}
+  </select> --}}
+{{#if campaigns }}
 <script type="text/ng-template" id="/impressions.html">
 
 <header>Impression report</header>
 <div class="filters">
-  <select ng-model="data.c" ng-change="refresh()">
-    <option value="56f9781c7365645894420ae7">2016 Q2 Heroku Signup</option>
-    <option value="56731043c554f496b6e1e217">2015 Q4 Heroku Signup</option>
-    <option value="56731043c554f496b6e1e147">2015 Q3 Heroku Signup</option>
-  </select>
   <select ng-model="data.s" ng-change="refresh()">
-    {{ weekOptions }}
+    {{ weekOptions campaigns }}
   </select>
 </div>
 
 <p class="report-summary report-empty" ng-if="!report">
   Select week to show results ...
 </p>
-<p class="report-summary" ng-if="report">
-  Displaying <span ng-bind="report.ads.length"></span> ads
-  totaling <span ng-bind="impressions | number "></span> impressions served
-  from
+<div class="report-summary" ng-if="report">
+
+  Served from
   <b ng-bind="report.start"></b> to <b ng-bind="report.end"></b>
-</p>
-<hr />
+
+  <table class="table table-striped log">
+    <tr>
+      <th>Ad </th>
+      <th>Impressions</th>
+      <th>Clicks</th>
+      <th>CTR</th>
+    </tr>
+    <tr ng-repeat="ad in report.ads" ng-if="ad.total.impressions > 0">
+      <td class="url">
+        <span ng-bind="ad.img"></span>
+      </td>
+      <td><span ng-bind="ad.total.impressions | number"></span></td>
+      <td><span ng-bind="ad.total.clicks | number"></span></td>
+      <td><span ng-bind="ad.total.clicks/ad.total.impressions | number:3"></span>%
+      </td>
+    </tr>
+    <tfoot>
+      <th ng-bind="report.ads.length + ' assets'"></th>
+      <th><span ng-bind="report.total.impressions | number"></span></th>
+      <th><span ng-bind="report.total.clicks | number"></span></th>
+      <th></th>
+    </tfoot>
+  </table>
+</div>
 <ul class="report" ng-if="report">
 
-  <li ng-repeat="ad in report.ads">
+  <li ng-repeat="ad in report.ads" ng-if="ad.total.impressions > 0">
+    <hr />
     <h5 ng-bind="ad.img"></h5>
 
       <table class="table table-striped log">
         <tr>
           <th>Url</th>
+          <th>Impressions <span ng-bind="ad.total.impressions | number"></span></th>
+          <th>Clicks <span ng-bind="ad.total.clicks | number"></span></th>
           <th>CTR</th>
-          <th>Impressions <span ng-bind="ad.total.impressions"></span></th>
-          <th>Clicks <span ng-bind="ad.total.clicks"></span></th>
         </tr>
         <tr ng-repeat="c in ad.impressions" ng-if="c.clicks > 0 || c.count > 50">
           <td class="url">
             <span url-link c="c"></span>
           </td>
-          <td><span ng-bind="(c.clicks ? c.clicks/c.count : 0) | number:3"></span>%</td>
-          <td><span ng-bind="c.count"></span></td>
+          <td><span ng-bind="c.count | number"></span></td>
           <td><span ng-bind="c.clicks || '-'"></span></td>
+          <td><span ng-bind="(c.clicks ? c.clicks/c.count : 0) | number:3"></span>%</td>
         </tr>
+        <tfoot>
+          <th></th>
+          <th><span ng-bind="ad.total.impressions | number"></span></th>
+          <th><span ng-bind="ad.total.clicks | number"></span></th>
+          <th></th>
+        </tfoot>
       </table>
 
     </div>
@@ -131,174 +161,56 @@
 </ul>
 
 </script>
-
+{{/if}}
 
 <script type="text/ng-template" id="/roi.html">
-<header>Campaign ROI report</header>
+<header>ROI report</header>
 
 <div class="roi">
 
-<h3>Heroku Q4(2) Summary</h3>
-<table class="table table-striped">
+<table class="table table-striped report">
   <tr>
+    <th>Campaign</th>
     <th>Start</th>
     <th>End</th>
     <th>Days</th>
     <th>Spend</th>
     <th>Target</th>
     <th>Delivered</th>
+    <th>CPM</th>
     <th>Clicks</th>
     <th>CPC</th>
-    <th>CPM</th>
   </tr>
-  <tr>
-    <td>2/1/2016</td>
-    <td>3/15/2016</td>
-    <td>49</td>
-    <td>$5000</td>
-    <td>500,000</td>
-    <td>492,273</td>
-    <td>$98.45</td>
-    <td>1646</td>
-    <td>$0.33</td>
-  </tr>
-</table>
-
-
-<h3>Heroku Q4(2) Weekly Performance</h3>
-
-<table class="table table-striped">
-  <tr>
-    <th>Week</th>
-    <th>Campaign</th>
-    <th>Tag</th>
-    <th>Creative</th>
-    <th>Spend</th>
-    <th>CRT</th>
-    <th>Clicks</th>
-    <th>Impressions</th>
-  </tr>
-  <tr>
-    <td>Feb 01-06</td>
-    <td>Q4(1)</td>
-    <td>java</td>
-    <td>900x90.q4.1.signup</td>
-    <td>$5.87</td>
-    <td>0.00%</td>
-    <td>0</td>
-    <td>664</td>
-  </tr>
-  <tr>
-    <td>Feb 01-06</td>
-    <td>Q4(1)</td>
-    <td>php</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 01-06</td>
-    <td>Q4(1)</td>
-    <td>node.js</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 08-14</td>
-    <td>Q4(1)</td>
-    <td>java</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 08-14</td>
-    <td>Q4(1)</td>
-    <td>php</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 08-14</td>
-    <td>Q4(1)</td>
-    <td>node.js</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 15-21</td>
-    <td>Q4(1)</td>
-    <td>java</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-          <tr>
-    <td>Feb 15-21</td>
-    <td>Q4(1)</td>
-    <td>php</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 15-21</td>
-    <td>Q4(1)</td>
-    <td>node.js</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 22-28</td>
-    <td>Q4(1)</td>
-    <td>java</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 22-28</td>
-    <td>Q4(1)</td>
-    <td>php</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Feb 22-28</td>
-    <td>Q4(1)</td>
-    <td>node.js</td>
-    <td>900x90.q4.1.signup</td>
-    <td></td>
-    <td>%</td>
-    <td></td>
-    <td></td>
+  <tr ng-repeat="c in rio.campaigns">
+    <td><span ng-bind="c.name"></span></td>
+    <td><span ng-bind="c.startStr"></span></td>
+    <td><span ng-bind="c.endStr"></span></td>
+    <td><span ng-bind="c.days"></span></td>
+    <td>$<span ng-bind="c.spend | number"></span></td>
+    <td><span ng-bind="c.target | number"></span></td>
+    <td><span ng-bind="c.delivered | number"></span></td>
+    <td>$<span ng-bind="(c.spend / (c.delivered / 1000)) | number:2"></span></td>
+    <td><span ng-bind="c.clicks"></span></td>
+    <td>$<span ng-bind="(c.spend / c.clicks) | number:2"></span></td>
   </tr>
 </table>
+
+<div ng-repeat="w in rio.weeks">
+
+
+<table class="table table-striped report tags">
+  <tr>
+    <th ng-bind="w.period" style="width:50%"></th>
+    <th style="width:25%">Impressions</th>
+    <th style="width:25%">Clicks</th>
+  </tr>
+  <tr ng-repeat="t in w.tags" ng-if="t.impressions > 0">
+    <td ng-bind="t.tag"></td>
+    <td ng-bind="t.impressions | number"></td>
+    <td ng-bind="t.clicks | number"></td>
+  </tr>
+</table>
+</div>
 
 </div>
 

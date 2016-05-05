@@ -7,7 +7,8 @@ module.exports = (app, mw) => {
 
   app.API('report')
     .params('campaign')
-    .get ({ getImpressions:        'campaign query.s'  })
+    .get ({ getImpressions:        'campaign query.s'  ,
+            getRoi:                ''                  })
 
 
   app.API('campaigns')
@@ -22,10 +23,22 @@ module.exports = (app, mw) => {
 
 
   app.get(['^/campaigns',
-           '^/impressions',
            '^/roi'],
     mw.$.session,
     mw.res.forbid('anon', req => req.user ? 0 : 'must login' , { redirect: req => '/' }),
     mw.$.page)
+
+
+  app.get(['^/impressions'],
+    mw.$.session,
+    mw.res.forbid('anon', req => req.user ? 0 : 'must login' , { redirect: req => '/' }),
+    (req, res, next) => {
+      app.meanair.logic.campaigns.get.exec.call(req, (e, campaigns) => {
+        assign(req.locals,{campaigns:campaigns})
+        next(e)
+      })
+    },
+    mw.$.page)
+
 
 }

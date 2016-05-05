@@ -13,7 +13,11 @@ module.exports = new LogicDataHelper(
       r = select.list(r)
       r.start = moment(r.start).format('YYYY MMM DD')
       r.end = moment(r.end).format('YYYY MMM DD')
-      for (var ad in r.ads) r.ads[ad].code = r.ads[ad].shortUrl.replace('https://www.airpair.com/visit/','')
+      for (var ad in r.ads) {
+        // So we don't cause impressions to track
+        r.ads[ad].img = r.ads[ad].img.replace('/ad/', '/ads/')
+        r.ads[ad].code = r.ads[ad].shortUrl.replace('https://www.airpair.com/visit/','')
+      }
       return r
     }
 

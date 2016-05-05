@@ -8,7 +8,6 @@
   "comm":                    "{{undefine}}",
   "http": {
     "cookieSecret":          "adsmony",
-    "port":                  3333,
     "static":                { "dirs": "dist" }
   },
   "log": {

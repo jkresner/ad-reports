@@ -11,21 +11,20 @@ module.exports = (DAL, Data, Shared, Lib) => ({
     var endId = ObjectID.createFromTime(endUtc.format('X'))
 
     var adIds = _.pluck(campaign.ads, '_id')
-    // $log('getImpressions.adIds'.gray, adIds)
-
-// heroku/900x90.q2-1.ruby.png
 
     var imgs =  _.pluck(campaign.ads, 'img').map(i => i.replace('https://www.airpair.com/ad/',''))
-    // $log('getImpressions.imgs'.gray, imgs)
 
     var q1 = { _id: { $gt: startId, $lt: endId }, img: { $in: imgs } }
 
+    // $log('getImpressions.adIds'.gray, adIds)
+    // $log('getImpressions.imgs'.gray, imgs)
     // $log('impressions.startId', startId, campaign.name)
     var r = {
       _id:campaign._id,
       name:campaign.name,
       start:startUtc.format('YYYY-MM-DD'),
       end:endUtc.format('YYYY-MM-DD'),
+      total: { clicks: 0, impressions: 0 },
       ads:[]
     }
 
@@ -48,13 +47,14 @@ module.exports = (DAL, Data, Shared, Lib) => ({
       { $group: { _id:{ img:'$img',ref:'$ref'}, count: { $sum: 1 } } },
       { $sort: { count: -1 } },
 
-    ], (e, agg1) => {
+    ], (e, aggImpressions) => {
 
-      // $log('agg1'.gray, agg1)
+      // $log('impressions'.gray, aggImpressions)
 
-      for (var set of agg1) {
-        var ad = _.find(r.ads,ad => ad.img == set._id.img)
+      for (var set of aggImpressions) {
+        var ad = _.find(r.ads, ad => ad.img == set._id.img)
         ad.total.impressions += set.count
+        r.total.impressions += set.count
         if (set.count > 1)
           ad.impressions.push({
             url: set._id.ref ? set._id.ref.replace('https://www.','') : 'unknown',
@@ -74,20 +74,27 @@ module.exports = (DAL, Data, Shared, Lib) => ({
       ], (e, agg2) => {
 
         // $log('aggregated'.yellow, agg2, JSON.stringify(q2))
-        for (var set of agg2) {
-          var ad = _.find(r.ads, ad => ad._id == set._id.ad.toString())
-          if (set.count > 1) {
-            var url = set._id.ref ? set._id.ref.replace('https://www.','') : 'unknown'
-            ad.total.clicks += set.count
-            ad.clicks.push({ url, count: set.count })
-            var ctr = _.find(ad.impressions, i => i.url.indexOf(url) != -1)
-            if (!ctr) console.log('set', set)
-            else ctr.clicks = set.count
+        for (var clicks of agg2) {
+          var ad = _.find(r.ads, ad => ad._id == clicks._id.ad.toString())
+          if (clicks.count > 1) {
+            var refUrl = clicks._id.ref ? clicks._id.ref.split('airpair.com')[1] : 'unknown'
+
+            ad.clicks.push({ url:refUrl, count: clicks.count })
+
+            var ctr = _.find(ad.impressions, i => i.url.indexOf(refUrl) != -1)
+            if (!ctr) console.log('set', clicks, refUrl)
+            else ctr.clicks = clicks.count
+
+            ad.total.clicks += clicks.count
+            r.total.clicks += clicks.count
           }
         }
 
         r.ads = _.sortBy(r.ads, ad => -1 * ad.total.clicks)
+
         cb(e, r)
+
+        Lib.updateRoiStats(campaign, start, r.ads)
       })
     })
   },
